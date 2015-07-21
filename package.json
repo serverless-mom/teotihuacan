@@ -11,10 +11,19 @@
     "functional",
     "testing"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tobyfee/teotihuacan.git"
+  },
   "author": "Toby Fee",
   "license": "ISC",
   "dependencies": {
     "simplecrawler": "^0.5.2",
     "unfluff": "^0.11.0"
+  },
+  "devDependencies": {
+    "gulp-shell": "^0.4.2",
+    "node-fs": "^0.1.7",
+    "wrench": "^1.5.8"
   }
 }
