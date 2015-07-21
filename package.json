@@ -1,0 +1,20 @@
+{
+  "name": "teotihuacan",
+  "version": "0.0.1",
+  "description": "Crawls and checks page text",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "crawler",
+    "functional",
+    "testing"
+  ],
+  "author": "Toby Fee",
+  "license": "ISC",
+  "dependencies": {
+    "simplecrawler": "^0.5.2",
+    "unfluff": "^0.11.0"
+  }
+}
