@@ -20,6 +20,8 @@ var downloadSite = function (domain, callback){
         var blobText = ""
         parsedURL = url.parse(queueItem.url)
         pathname = (parsedURL.pathname)
+        if (pathname === '/')
+          pathname = '/index.html'
         item = extractor(responseBuffer)
         blobText = "Pathname:"+pathname + "\n" + item.text
         console.log (blobText)

@@ -2,7 +2,7 @@ var gulp = require('gulp'),
  shell = require('gulp-shell')
 
 gulp.task('code', shell.task([
-  'node index.js'
+  'node index.js example.com'
 ]))
 
 gulp.task('watch', function() {
