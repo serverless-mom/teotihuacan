@@ -1,8 +1,9 @@
 var crawler = require('simplecrawler'),
   fs = require('node-fs'),
   url = require('url'),
-  wrench = require('wrench'),
+  //wrench = require('wrench'),
   extractor = require('unfluff')
+  util = require('util') //for debuggery
 
 
 
@@ -18,8 +19,12 @@ var downloadSite = function (domain, callback){
 
   var teotihuacan = new crawler(domain)
   //config block for the crawler
-  teotihuacan.downloadUnsupported = true
-  teotihuacan.interval = 250
+  teotihuacan.downloadUnsupported = false //trying to prevent binary data getting grabbed
+  //teotihuacan.interval = 250
+
+  teotihuacan.on("fetchstart", function(queueItem){
+    console.log ('trying to grab ', queueItem.url);
+  })
 
 
   teotihuacan.on("fetchcomplete", function(queueItem, responseBuffer){
@@ -30,12 +35,19 @@ var downloadSite = function (domain, callback){
         if (pathname === '/')
           pathname = '/index.html'
         item = extractor(responseBuffer)
-        blobText = "#Pathname:"+pathname + "\n" + item.text +"\n"
-        console.log (blobText)
-        fs.appendFile(outputFile, blobText, function (err) {
-          if (err) throw err;
-          console.log('The "data to append" was appended to file!');
-        });
+        if (item.text.length >5 && item.text.length < 18000){
+          blobText = "#Pathname:"+pathname + "\n" + item.text +"\n"
+          fs.appendFile(outputFile, blobText, function (err) {
+            if (err) throw err;
+            console.log('Appending '+pathname+' data to file.')
+            console.log ('Data is this long: '+(blobText.length))
+          });
+        } else {
+          console.log ('not adding ', queueItem.url, ' to the file!',
+          'its text length is ',item.text.length)
+        }
+
+
   })
 
   teotihuacan.on('complete', function () {
@@ -46,9 +58,9 @@ var downloadSite = function (domain, callback){
 }
 
 if (process.argv.length < 3) {
-  console.log('Usage: node index.js mysite.com')
+  console.log('Usage: node crawler.js mysite.com')
   process.exit(1)
 }
 downloadSite (process.argv[2], function () {
-  //console.log ("done!")
+  console.log ("done!")
 })
