@@ -28,3 +28,6 @@ node_modules
 
 #Results files
 *.txt
+
+#mac files
+.DS_Store
