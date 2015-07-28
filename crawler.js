@@ -20,8 +20,8 @@ var downloadSite = function (domain, callback){
   var teotihuacan = new crawler(domain)
   //config block for the crawler
   teotihuacan.downloadUnsupported = false //trying to prevent binary data getting grabbed
-  //teotihuacan.interval = 250
-
+  teotihuacan.stripQuerystring = true
+  teotihuacan.supportedMimeTypes = []
   teotihuacan.on("fetchstart", function(queueItem){
     console.log ('trying to grab ', queueItem.url);
   })
@@ -32,10 +32,11 @@ var downloadSite = function (domain, callback){
         var blobText = ""         //holds the page text and pathname
         parsedURL = url.parse(queueItem.url)
         pathname = (parsedURL.pathname)
+        type = (queueItem.stateData.contentType)
         if (pathname === '/')
           pathname = '/index.html'
         item = extractor(responseBuffer)
-        if (item.text.length >5 && item.text.length < 18000){
+        if (item.text.length >5 && item.text.length < 18000 && type == "text/html"){
           blobText = "#Pathname:"+pathname + "\n" + item.text +"\n"
           fs.appendFile(outputFile, blobText, function (err) {
             if (err) throw err;
@@ -44,7 +45,7 @@ var downloadSite = function (domain, callback){
           });
         } else {
           console.log ('not adding ', queueItem.url, ' to the file!',
-          'its text length is ',item.text.length)
+          'its text length is ',item.text.length, 'and has type ', type)
         }
 
 
