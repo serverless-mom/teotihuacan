@@ -21,7 +21,12 @@ var downloadSite = function (domain, callback){
   //config block for the crawler
   teotihuacan.downloadUnsupported = false //trying to prevent binary data getting grabbed
   teotihuacan.stripQuerystring = true
-  teotihuacan.supportedMimeTypes = []
+  //can't make this option work
+  //teotihuacan.supportedMimeTypes = [/^text\/(css|javascript|ecmascript|html)/i]
+
+  var conditionID = teotihuacan.addFetchCondition(function(parsedURL) {
+    return !parsedURL.path.match(/\.(pdf|gif|jpe?g|png|tiff|mp3)$/i);
+  })
   teotihuacan.on("fetchstart", function(queueItem){
     console.log ('trying to grab ', queueItem.url);
   })
